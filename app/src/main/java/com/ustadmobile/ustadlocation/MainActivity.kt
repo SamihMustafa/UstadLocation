@@ -11,30 +11,18 @@ import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, View.OnClickListener, DownloadProgressView.OnStopDownloadListener {
 
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+
+    val locationList = arrayOf(
+        Locations("United Arab Emirates","98%", R.drawable.ic_flag_of_the_united_arab_emirates, 125000),
+        Locations("United Kingdom","95%", R.drawable.ic_flag_of_the_united_kingdom, 253000),
+        Locations("Jordan","67%", R.drawable.ic_flag_of_jordan, 526000),
+        Locations("Kenya","86%", R.drawable.ic_flag_of_kenya, 513000),
+        Locations("Afghanistan","13.5%", R.drawable.afg, 1072000)
+    )
+
 
     private var mCountDownTimer: CountDownTimer? = null
     var selected: Locations? = null
-
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {setDownloadProgressVisible(false)
-        setDownloadButtonVisible(true)
-        setDownloadProgressVisible(false)
-        setButtonTextLabel("Download")
-        mCountDownTimer?.cancel()
-        selected = parent?.getItemAtPosition(position) as Locations
-        thumbnail.setImageResource(selected!!.thumbnail)
-        title.text = selected!!.title
-    }
-
-    val locationList = arrayOf(
-            Locations("United Arab Emirates","98%", R.drawable.ic_flag_of_the_united_arab_emirates, 125000),
-            Locations("United Kingdom","95%", R.drawable.ic_flag_of_the_united_kingdom, 253000),
-            Locations("Jordan","67%", R.drawable.ic_flag_of_jordan, 526000),
-            Locations("Kenya","86%", R.drawable.ic_flag_of_kenya, 513000),
-            Locations("Afghanistan","13.5%", R.drawable.afg, 1072000)
-    )
 
     lateinit var title: TextView
     lateinit var downloadButton: Button
@@ -59,6 +47,36 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Vi
         setButtonTextLabel("Download")
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.location_menu, menu)
+
+        val item = menu!!.findItem(R.id.spinner)
+        val spinner = item.actionView as Spinner
+
+        val adapter = ArrayAdapter<Locations>(this, android.R.layout.simple_list_item_1, locationList)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        spinner.adapter = adapter
+        spinner.onItemSelectedListener = this
+
+        return true
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {setDownloadProgressVisible(false)
+        setDownloadButtonVisible(true)
+        setDownloadProgressVisible(false)
+        setButtonTextLabel("Download")
+        mCountDownTimer?.cancel()
+        selected = parent?.getItemAtPosition(position) as Locations
+        thumbnail.setImageResource(selected!!.thumbnail)
+        title.text = selected!!.title
+    }
+
+
     fun setDownloadButtonVisible(visible: Boolean) {
         downloadButton.visibility = if (visible) View.VISIBLE else View.GONE
     }
@@ -75,21 +93,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Vi
         downloadProgress.statusText = progressLabel
     }
 
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.location_menu, menu)
-
-        val item = menu!!.findItem(R.id.spinner)
-        val spinner = item.actionView as Spinner
-
-        val adapter = ArrayAdapter<Locations>(this, android.R.layout.simple_list_item_1, locationList)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-        spinner.adapter = adapter
-        spinner.onItemSelectedListener = this
-
-        return true
-    }
 
     override fun onClick(v: View?) {
         setButtonTextLabel("Download")
