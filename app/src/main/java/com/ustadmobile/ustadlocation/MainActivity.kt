@@ -13,11 +13,12 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Vi
 
 
     val locationList = arrayOf(
-        Locations("United Arab Emirates","98%", R.drawable.ic_flag_of_the_united_arab_emirates, 125000),
-        Locations("United Kingdom","95%", R.drawable.ic_flag_of_the_united_kingdom, 253000),
-        Locations("Jordan","67%", R.drawable.ic_flag_of_jordan, 526000),
-        Locations("Kenya","86%", R.drawable.ic_flag_of_kenya, 513000),
-        Locations("Afghanistan","13.5%", R.drawable.afg, 1072000)
+        Locations("United Arab Emirates","This will show how long it takes to download 4 hours of video content using Mobile Internet in United Arab Emirates", R.drawable.ic_flag_of_the_united_arab_emirates, 125000),
+        Locations("United Kingdom","This will show how long it takes to download 4 hours of video content using Mobile Internet in United Kingdom", R.drawable.ic_flag_of_the_united_kingdom, 253000),
+        Locations("Jordan","This will show how long it takes to download 4 hours of video content using Mobile Internet in Jordan", R.drawable.ic_flag_of_jordan, 526000),
+        Locations("Kenya","This will show how long it takes to download 4 hours of video content using Mobile Internet in Kenya", R.drawable.ic_flag_of_kenya, 513000),
+        Locations("Afghanistan","This will show how long it takes to download 4 hours of video content using Mobile Internet in Afghanistan", R.drawable.afg, 1072000),
+        Locations("Peer to Peer","This will show how long it takes to download 4 hours of video content using Peer to Peer offline sharing", R.drawable.sharing_data, 120000)
     )
 
 
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Vi
     lateinit var downloadProgress: DownloadProgressView
     lateinit var toolbar: Toolbar
     lateinit var thumbnail: ImageView
+    lateinit var description: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +40,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Vi
         downloadButton = findViewById(R.id.entry_download_open_button)
         downloadProgress = findViewById(R.id.entry_detail_progress)
         thumbnail = findViewById(R.id.entry_detail_thumbnail)
+        description = findViewById(R.id.entry_detail_description)
         toolbar = findViewById(R.id.um_toolbar)
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
@@ -53,8 +56,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Vi
         val item = menu!!.findItem(R.id.spinner)
         val spinner = item.actionView as Spinner
 
-        val adapter = ArrayAdapter<Locations>(this, android.R.layout.simple_list_item_1, locationList)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val adapter = ArrayAdapter<Locations>(this, R.layout.spinner_text_view, locationList)
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown)
 
         spinner.adapter = adapter
         spinner.onItemSelectedListener = this
@@ -74,6 +77,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener, Vi
         selected = parent?.getItemAtPosition(position) as Locations
         thumbnail.setImageResource(selected!!.thumbnail)
         title.text = selected!!.title
+        description.text = selected!!.description
     }
 
 
